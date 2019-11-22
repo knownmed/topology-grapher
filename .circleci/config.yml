@@ -93,11 +93,10 @@ jobs:
 
       - run:
           name: Deploy to Clojars
-          command: |
-            export LEIN_GPG=/home/circleci/topology-grapher/.circleci/bin/gpg
-            export REAL_GPG=$(which gpg)
-
-            lein do jar, pom, deploy clojars
+          command: lein do jar, pom, deploy clojars
+          environment:
+            LEIN_GPG: /home/circleci/topology-grapher/.circleci/bin/gpg
+            REAL_GPG: /usr/bin/gpg
 
   deploy_snapshot:
     <<: *defaults
