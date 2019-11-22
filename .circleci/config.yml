@@ -121,6 +121,7 @@ workflows:
       - publish_topologies
 
       - deploy_snapshot:
+          context: clojars-deploy
           requires:
             - test
           filters:
@@ -130,6 +131,7 @@ workflows:
               ignore: /master/
 
       - deploy:
+          context: clojars-deploy
           requires:
             - checkout_tags
           filters:
