@@ -117,7 +117,13 @@ workflows:
     jobs:
       - test
       - coverage
-      - checkout_tags
+      - checkout_tags:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+
       - publish_topologies
 
       - deploy_snapshot:
