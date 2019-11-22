@@ -44,7 +44,7 @@
   [["clojars" {:url "https://clojars.org/repo/"
                :username :env/clojars_username
                :password :env/clojars_password
-               :signing {:gpg-key "fundingcirclebot@fundingcircle.com"}}]]}
+               :signing {:gpg-key "fundingcirclebot@fundingcircle.com"}}]]
 
   :repositories
   {"confluent" {:url "https://packages.confluent.io/maven/"}})
