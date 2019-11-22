@@ -1,7 +1,6 @@
 # Topology Grapher
 
-
-[![CircleCI](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master.svg?style=svg&circle-token=b74840294a879683fbd0237eaff482f8db2342a5)](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master)
+[![CircleCI](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master.svg?style=svg)](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master)
 [![codecov](https://codecov.io/gh/FundingCircle/topology-grapher/branch/master/graph/badge.svg)](https://codecov.io/gh/FundingCircle/topology-grapher)
 
 This library provides a means to build a directed graph (data) from a kafka streams topology.
