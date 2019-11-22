@@ -1,0 +1,63 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/clojure:lein-2.9.1
+  working_directory: ~/topology-grapher
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - grapher-{{ checksum "project.clj" }}
+
+      - run: sudo apt update && sudo apt install graphviz
+      - run: lein deps
+      - run: lein eastwood
+      - run: lein cljfmt check
+      - run: lein kaocha --plugin kaocha.plugin/junit-xml --junit-xml-file test-results/kaocha/results.xml
+      - store_test_results:
+          path: test-results
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: grapher-{{ checksum "project.clj" }}
+
+  coverage:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - grapher-{{ checksum "project.clj" }}
+
+      - run: sudo apt update && sudo apt install graphviz
+      - run: lein kaocha --plugin cloverage --codecov
+
+      - store_artifacts:
+          path: target/coverage
+
+      - run:
+          name: Upload test coverage report to Codecov
+          command: bash <(curl -s https://codecov.io/bash)
+
+  publish_topologies:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - grapher-{{ checksum "project.clj" }}
+      - run: lein run -m topology-grapher.topology
+
+workflows:
+  version: 2
+  test-then-deploy:
+    jobs:
+      - test
+      - coverage
+      - publish_topologies
