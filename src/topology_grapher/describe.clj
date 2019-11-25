@@ -47,15 +47,19 @@
           application-name
           (git-sha)))
 
+(defn gen-topologies
+  [topologies meta-data]
+  (->> topologies
+       (map (fn [tc]
+              (topology->graph (:fn tc) (:config tc) meta-data)))
+       (map (fn [g] {(name-for-graph g) g}))
+       (into {})))
+
 (defn describe-all
-  "Describe all the topologies"
+  "Describe all the topologies and create a zip file with the result"
   [topologies meta-data]
   (let [application-name (:application meta-data)
-        graphs (map (fn [tc]
-                      (topology->graph (:fn tc) (:config tc) meta-data)) topologies)
-        graphs-by-name (into {}
-                             (for [g graphs]
-                               {(name-for-graph g) g}))
+        graphs-by-name (gen-topologies topologies meta-data)
         zip-file-path (zipfile-path application-name)
         zip-file-master (format "%s/%s_%s.zip" base-path "latest" application-name)]
 
