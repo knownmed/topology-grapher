@@ -13,7 +13,6 @@
 (defn zip-content
   "Zip all the given files into the desired output file"
   [output-filename edns]
-  (println (format "zipping %d files into %s" (count edns) output-filename))
   (with-open [output (ZipOutputStream. (io/output-stream output-filename))]
     (doseq [[entry-name content] edns]
       (with-entry output entry-name

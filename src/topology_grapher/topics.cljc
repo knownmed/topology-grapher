@@ -25,7 +25,7 @@
          (map first)
          set)))
 
-(defn topics-loom
+(defn extract-topics
   [topology]
   (let [gr (topology->loom topology)]
     ;; could also add intermediate topics potentially?
@@ -38,19 +38,19 @@
   (let [vs (vals topics-map)
         inp (map :inputs vs)
         out (map :outputs vs)]
-
     (s/union
      (reduce s/union inp)
      (reduce s/union out))))
 
 (defn topics-by-topology
   [mode topics]
-  (let [rr (filter some?
-                   (apply concat
-                          (for [t (list-topics topics)]
-                            (for [[id v] topics]
-                              (when (contains? (mode v) t)
-                                [t id])))))]
+  (let [ts (for [t (list-topics topics)]
+             (for [[id v] topics]
+               (when (contains? (mode v) t)
+                 [t id])))
+        rr (->> ts
+                (apply concat)
+                (filter some?))]
     (into {}
           (for [[k v] (group-by first rr)]
             {k (map second v)}))))
