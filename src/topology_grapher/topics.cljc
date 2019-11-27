@@ -5,6 +5,8 @@
             [topology-grapher.analytics :as a]))
 
 (defn topology->loom
+  "Convert the given topology graph into a loom graph,
+  which makes it simpler to do further analysis later on."
   [topology]
   (let [g (-> topology
               a/prune-to-topology)
@@ -33,7 +35,7 @@
     {:inputs (boundaries gr :in)
      :outputs (boundaries gr :out)}))
 
-(defn list-topics
+(defn topics-map->topics
   [topics-map]
   (let [vs (vals topics-map)
         inp (map :inputs vs)
@@ -44,7 +46,7 @@
 
 (defn topics-by-topology
   [mode topics]
-  (let [ts (for [t (list-topics topics)]
+  (let [ts (for [t (topics-map->topics topics)]
              (for [[id v] topics]
                (when (contains? (mode v) t)
                  [t id])))
