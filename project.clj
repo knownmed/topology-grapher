@@ -9,7 +9,8 @@
                  ;; this library should be always available given the types
                  ;; of project that are using this library
                  [org.apache.kafka/kafka-streams "2.2.0" :scope "provided"]
-                 [org.clojure/tools.cli "0.4.2"]]
+                 [org.clojure/tools.cli "0.4.2"]
+                 [aysylu/loom "1.0.2"]]
 
   :plugins [[me.arrdem/lein-git-version "2.0.8"]
             [jonase/eastwood "0.3.5"]]
