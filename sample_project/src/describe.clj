@@ -27,7 +27,7 @@
    {:fn (fn [_] (interop/gen-topology))
     :config {"application.id" "interop-topology"}}])
 
-(defn live-render
+(defn render-all!
   []
   (let [topologies (td/gen-topologies (topologies) meta-data)]
     (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})))

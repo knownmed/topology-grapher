@@ -5,5 +5,5 @@
 (h/watch! [{:paths ["src"]
             :filter h/file?
             :handler (fn [ctx e]
-                       (d/live-render)
+                       (d/render-all!)
                        ctx)}])

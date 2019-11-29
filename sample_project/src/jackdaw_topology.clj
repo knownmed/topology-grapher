@@ -13,11 +13,17 @@
    :key-serde (je/serde)
    :value-serde (je/serde)})
 
+(defn transform
+  [v]
+  (-> v
+      (update :value inc)
+      (select-keys [:value])))
+
 (defn t1
   [builder]
   (-> (js/kstream builder (topic-config "input"))
       (js/filter (fn [v] (not (:enabled v))))
-      (js/map-values (fn [v] (update v :field inc)))
+      (js/map-values transform)
       (js/to (topic-config "output")))
 
   builder)
