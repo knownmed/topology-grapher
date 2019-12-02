@@ -6,10 +6,16 @@
 (def topologies
   (td/gen-topologies (d/topologies) d/meta-data))
 
-(comment
-  (t/topology->loom
-   (first
-    (vals topologies))))
+(def sample-topology (first (vals topologies)))
 
+;; query information about the topologies
+(comment
+  (t/topology->loom sample-topology))
+
+;; now extract the topics
+(comment
+  (t/extract-topics sample-topology))
+
+;; render all the topologies available
 (comment
   (d/render-all!))
