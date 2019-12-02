@@ -115,8 +115,13 @@ workflows:
   version: 2
   test-then-deploy:
     jobs:
-      - test
+      - test:
+          filters:
+            tags:
+              only: /.*/
+
       - coverage
+      
       - checkout_tags:
           filters:
             tags:
