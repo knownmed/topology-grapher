@@ -10,6 +10,7 @@
   (System/getenv env-var))
 
 (defn name-for-graph
+  "Generate a human readable name for the topology"
   [graph]
   (format "%s.edn"
           (s/join "-"
@@ -21,11 +22,10 @@
 (defn git-sha [] (get-env-var "CIRCLE_SHA1"))
 (defn git-branch [] (get-env-var "CIRCLE_BRANCH"))
 
-(def base-path
-  (or (get-env-var "ZIP_OUTPUT_DIR") "/tmp/zips"))
+(def default-zip-path "/tmp/zips")
 
 (defn zipfile-path
-  [application-name]
+  [base-path application-name]
   (format "%s/%s_%s.zip"
           base-path
           application-name
@@ -44,13 +44,15 @@
 
 (defn generate-zip
   "Describe all the topologies and create a zip file with the result"
-  [topologies meta-data]
-  (let [application-name (:application meta-data)
-        graphs-by-name (gen-topologies topologies meta-data)
-        zip-file-path (zipfile-path application-name)
-        zip-file-master (format "%s/%s_%s.zip" base-path "latest" application-name)]
+  ([topologies meta-data]
+   (generate-zip topologies meta-data default-zip-path))
+  ([topologies meta-data base-path]
+   (let [application-name (:application meta-data)
+         graphs-by-name (gen-topologies topologies meta-data)
+         zip-file-path (zipfile-path base-path application-name)
+         zip-file-master (format "%s/%s_%s.zip" base-path "latest" application-name)]
 
-    (io/make-parents zip-file-path)
-    (zipit/zip-content zip-file-path graphs-by-name)
-    (when (= "master" (git-branch))
-      (zipit/zip-content zip-file-master graphs-by-name))))
+     (io/make-parents zip-file-path)
+     (zipit/zip-content zip-file-path graphs-by-name)
+     (when (= "master" (git-branch))
+       (zipit/zip-content zip-file-master graphs-by-name)))))
