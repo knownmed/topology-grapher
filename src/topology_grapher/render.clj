@@ -42,16 +42,17 @@
   "Render the given topologies out to file"
   ([topologies]
    (render-graph topologies {:cache true :fmt "png" :mode "detail"}))
-  ([topologies {:keys [fmt mode output-file cache]}]
+  ([topologies {:keys [fmt mode output-file cache base-dir]}]
    {:pre [(modes mode) (fmts fmt) (caches cache)]}
    (let [ids (map :id topologies)
+         base-directory (or base-dir c/base-directory)
          ids-hash (md5 (s/join ids))
          filename (or output-file
-                      (format "%s/%s_%s.%s" c/work-dir mode ids-hash fmt))]
+                      (format "%s/%s_%s.%s" base-directory mode ids-hash fmt))
+         combined-graph (combined-graph-dot topologies ids mode)]
      (if (= fmt "dot")
-       (spit filename
-             (combined-graph-dot topologies ids mode))
+       (spit filename combined-graph)
        (when-not (and cache (.exists (io/file filename)))
-         (gviz/render fmt (combined-graph-dot topologies ids mode) filename)))
+         (gviz/render fmt combined-graph filename)))
 
      filename)))
