@@ -20,23 +20,18 @@
   (wrapper (map renderer gl)))
 
 (defn- combined-graph-dot
-  [topologies ids mode]
-  (let [filtered-topos
-        (filter
-         #(contains? (set ids) (:id %))
-         topologies)]
+  [topologies mode]
+  (assert (seq topologies) "Empty topology list")
+  (render-all
+   (if (= mode "detail")
+     topologies
+     (map prune-to-topology topologies))
 
-    (assert (seq filtered-topos) "could not find any topology passed in")
-    (render-all
-     (if (= mode "detail")
-       filtered-topos
-       (map prune-to-topology filtered-topos))
-
-     gviz/render-topology
-     (if (= mode "detail")
-       gviz/->digraph
-       (fn [g]
-         (gviz/->digraph g {:clusterrank "none"}))))))
+   gviz/render-topology
+   (if (= mode "detail")
+     gviz/->digraph
+     (fn [g]
+       (gviz/->digraph g {:clusterrank "none"})))))
 
 (defn render-graph
   "Render the given topologies out to file"
@@ -49,7 +44,7 @@
          ids-hash (md5 (s/join ids))
          filename (or output-file
                       (format "%s/%s_%s.%s" base-directory mode ids-hash fmt))
-         combined-graph (combined-graph-dot topologies ids mode)]
+         combined-graph (combined-graph-dot topologies mode)]
      (if (= fmt "dot")
        (spit filename combined-graph)
        (when-not (and cache (.exists (io/file filename)))
