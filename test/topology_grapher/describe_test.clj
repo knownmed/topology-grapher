@@ -1,6 +1,6 @@
 (ns topology-grapher.describe-test
   (:require [topology-grapher.describe :as sut]
-            [topology-grapher.topology :as t]
+            [topology-grapher.sample-data :as t]
             [topology-grapher.zipit :refer [list-zip-file]]
             [clojure.java.io :as io]
             [clojure.test :refer [deftest testing is use-fixtures]]))
@@ -24,16 +24,16 @@
 
 (def meta-data {:application "application" :domain "domain"})
 
-(deftest describe-all-test
+(deftest generate-zip-test
   (testing "generating one zip file for a branch different from master"
-    (sut/describe-all t/topologies t/meta-data)
+    (sut/generate-zip t/topologies t/meta-data)
     (is (true? (.isFile (io/file output-zip-file))))
     (is (= #{"world-test-application-test-application.edn"}
            (set (list-zip-file output-zip-file 1)))))
 
   (testing "generating two zip files for master"
     (with-redefs [sut/git-branch (constantly "master")]
-      (sut/describe-all t/topologies t/meta-data))
+      (sut/generate-zip t/topologies t/meta-data))
 
     (is (true? (.isFile (io/file output-zip-file))))
     (is (true? (.isFile (io/file output-zip-latest))))))

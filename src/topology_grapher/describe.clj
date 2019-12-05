@@ -3,18 +3,19 @@
             [topology-grapher.zipit :as zipit]
             [clojure.string :as s]
             [clojure.java.io :as io])
-  (:import (org.apache.kafka.streams StreamsBuilder Topology)))
+  (:import (org.apache.kafka.streams Topology)))
 
 (defn- get-env-var
   [env-var]
   (System/getenv env-var))
 
-(defn name-for-graph [graph]
+(defn name-for-graph
+  [graph]
   (format "%s.edn"
-          (s/join "-" (vals (select-keys graph [:domain
-                                                :subdomain
-                                                :application
-                                                :topology])))))
+          (s/join "-"
+                  (-> graph
+                      (select-keys [:domain :subdomain :application :topology])
+                      vals))))
 
 ;;TODO: would be nice to avoid this tight coupling with CircleCI
 (defn git-sha [] (get-env-var "CIRCLE_SHA1"))
@@ -22,23 +23,6 @@
 
 (def base-path
   (or (get-env-var "ZIP_OUTPUT_DIR") "/tmp/zips"))
-
-(defn app-id
-  [config]
-  (get config "application.id"))
-
-(defn topology->graph
-  [topology config meta-data]
-  (merge
-   meta-data
-   (ggen/describe-topology
-    (let [g (topology (StreamsBuilder.))]
-      ;; this could be avoided if we enforce a single type
-      (if (instance? Topology g)
-        g
-        (.build g)))
-
-    (app-id config))))
 
 (defn zipfile-path
   [application-name]
@@ -50,12 +34,15 @@
 (defn gen-topologies
   [topologies meta-data]
   (->> topologies
-       (map (fn [tc]
-              (topology->graph (:fn tc) (:config tc) meta-data)))
+       (map (fn [{:keys [^Topology topology application-name]}]
+              (merge meta-data
+                     (ggen/describe-topology
+                      topology
+                      application-name))))
        (map (fn [g] {(name-for-graph g) g}))
        (into {})))
 
-(defn describe-all
+(defn generate-zip
   "Describe all the topologies and create a zip file with the result"
   [topologies meta-data]
   (let [application-name (:application meta-data)

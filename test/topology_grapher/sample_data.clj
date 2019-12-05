@@ -1,4 +1,43 @@
-(ns topology-grapher.sample-data)
+(ns topology-grapher.sample-data
+  (:require [topology-grapher.describe :refer [generate-zip]])
+  (:import (org.apache.kafka.streams StreamsBuilder)
+           (org.apache.kafka.streams.kstream Predicate ValueMapper))
+  (:gen-class))
+
+(defn f->Predicate
+  [f]
+  (reify Predicate
+    (test [_ k v]
+      (f k v))))
+
+(defn f->ValueMapper
+  [f]
+  (reify ValueMapper
+    (apply [_ v]
+      (f v))))
+
+(defn gen-topology
+  []
+  (let [builder (StreamsBuilder.)]
+    (-> (.stream builder "topic-1")
+        (.filter (f->Predicate (fn [_ v] (pos? v))))
+        (.mapValues (f->ValueMapper (fn [v] (inc v))))
+        (.to "stream1-topic"))
+
+    (-> (.stream builder "topic-2")
+        (.to "stream2-topic"))
+
+    (.build builder)))
+
+(def application-name "test-application")
+
+(def topologies
+  [{:topology         (gen-topology)
+    :application-name application-name}])
+
+(def meta-data
+  {:application application-name
+   :domain "world"})
 
 (def sample-topology
   {:topology "app.id",
@@ -62,3 +101,7 @@ label=\"stream_1\";
 xxxxxxxxxxxxxxxx [label=SINK;shape=box;style=filled;fillcolor=gray70];
 xxxxxxxxxxxxxxxx [label=SOURCE;shape=box;style=filled;fillcolor=gray70];
 }\n}\n")
+
+(defn -main
+  [& _]
+  (generate-zip topologies meta-data))
