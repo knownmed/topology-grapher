@@ -5,9 +5,7 @@
             [clojure.java.io :as io])
   (:import (org.apache.kafka.streams Topology)))
 
-(defn- get-env-var
-  [env-var]
-  (System/getenv env-var))
+(def fields [:domain :subdomain :application :topology])
 
 (defn name-for-graph
   "Generate a human readable name for the topology"
@@ -18,18 +16,16 @@
                       (select-keys [:domain :subdomain :application :topology])
                       vals))))
 
-;;TODO: would be nice to avoid this tight coupling with CircleCI
-(defn git-sha [] (get-env-var "CIRCLE_SHA1"))
-(defn git-branch [] (get-env-var "CIRCLE_BRANCH"))
-
 (def default-zip-path "/tmp/zips")
 
 (defn zipfile-path
-  [base-path application-name]
-  (format "%s/%s_%s.zip"
-          base-path
-          application-name
-          (git-sha)))
+  [application-name base-path sha]
+  (if (some? sha)
+    (format "%s/%s_%s.zip"
+            base-path
+            application-name
+            (sha))
+    (format "%s_%s.zip" base-path application-name)))
 
 (defn gen-topologies
   [topologies meta-data]
@@ -45,14 +41,14 @@
 (defn generate-zip
   "Describe all the topologies and create a zip file with the result"
   ([topologies meta-data]
-   (generate-zip topologies meta-data default-zip-path))
-  ([topologies meta-data base-path]
+   (generate-zip topologies meta-data default-zip-path {}))
+  ([topologies meta-data base-path {:keys [sha branch] :as rev}]
    (let [application-name (:application meta-data)
          graphs-by-name (gen-topologies topologies meta-data)
-         zip-file-path (zipfile-path base-path application-name)
+         zip-file-path (zipfile-path base-path application-name sha)
          zip-file-master (format "%s/%s_%s.zip" base-path "latest" application-name)]
 
      (io/make-parents zip-file-path)
      (zipit/zip-content zip-file-path graphs-by-name)
-     (when (= "master" (git-branch))
+     (when (= "master" branch)
        (zipit/zip-content zip-file-master graphs-by-name)))))
