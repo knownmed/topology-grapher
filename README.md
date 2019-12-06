@@ -202,3 +202,7 @@ This particular CircleCI step can run in parallel with any other job, and should
 
 And you are done, if you integrated in a way that all the topologies will always be published automatically
 there is 0 maintenance effort needed from now on.
+
+## Contributing
+
+We welcome any thoughts or patches, please check the [Contributing guide](CONTRIBUTING.md) to see how to contribute to this project.
