@@ -8,7 +8,9 @@ This library provides a means to build a directed graph (data) from a kafka stre
 
 # How to integrate your application
 
-There are a few simple steps to follow to integrate your kafka streaming app:
+If you want to play around with this library you can check the [sample project](./sample_project/README.md).
+
+There are a few simple steps to follow to integrate your kafka streaming app.
 
 ## 1. implement a command to call the describe-topologies
 
