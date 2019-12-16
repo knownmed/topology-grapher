@@ -18,14 +18,14 @@
 
 (defn topologies
   []
-  [{:fn (fn [_] (topology-from-stream-builder (jt/t1 (js/streams-builder))))
-    :config {"application.id" "my-application-id"}}
+  [{:topology (topology-from-stream-builder (jt/t1 (js/streams-builder)))
+    :application-name "my-application-id"}
 
-   {:fn (fn [_] (topology-from-stream-builder (jt/t2 (js/streams-builder))))
-    :config {"application.id" "my-second-application-id"}}
+   {:topology (topology-from-stream-builder (jt/t2 (js/streams-builder)))
+    :application-name "my-second-application-id"}
 
-   {:fn (fn [_] (interop/gen-topology))
-    :config {"application.id" "interop-topology"}}])
+   {:topology (interop/gen-topology)
+    :application-name "interop-topology"}])
 
 (defn render-all!
   []
