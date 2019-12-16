@@ -52,7 +52,7 @@ jobs:
       - restore_cache:
           keys:
           - grapher-{{ checksum "project.clj" }}
-      - run: lein run -m topology-grapher.topology
+      - run: lein run -m topology-grapher.sample-data
 
   checkout_tags:
     <<: *defaults
@@ -121,7 +121,7 @@ workflows:
               only: /.*/
 
       - coverage
-      
+
       - checkout_tags:
           filters:
             tags:

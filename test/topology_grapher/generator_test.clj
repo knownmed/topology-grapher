@@ -2,7 +2,7 @@
   (:require [topology-grapher.generator :as sut]
             [clj-uuid]
             [topology-grapher.sample-data :refer [sample-topology]]
-            [topology-grapher.topology :refer [gen-topology]]
+            [topology-grapher.sample-data :refer [gen-topology]]
             [clojure.test :refer [deftest testing is]]))
 
 (def test-uuid "xxxxxxxxxxxxxxxx")

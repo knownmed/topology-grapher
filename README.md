@@ -150,24 +150,24 @@ There are a few simple steps to follow to integrate your kafka streaming app:
 
 ```
 (ns your-namespace
-  (:require [topology-grapher.describe :refer [describe-all]]))
+  (:require [topology-grapher.describe :refer [generate-zip]]))
 
 (def meta-data {:domain "domain"
     :subdomain "subdomain"
     :application "application-name"})
 
 (def topologies
-  [{:config topology-1-config
-    :fn topology-1-fn}
+  [{:application-name "app-2"
+    :topology topology-1}
 
-   {:config topology-2-config
-    :fn topology-2-fn}])
+   {:application-name "app-1"
+    :topology topology-2}])
 
-(describe-all topologies meta-data)
+(generate-zip topologies meta-data)
 
 ```
 
-The `describe-all` function is what takes care of transforming
+The `generate-zip` function is what takes care of transforming
 topologies objects into EDN files that are written out to disk.
 
 The important thing is that you need to be have a function that
