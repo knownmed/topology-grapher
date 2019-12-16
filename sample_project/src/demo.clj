@@ -1,6 +1,5 @@
 (ns demo
-  (:require [topology-grapher.topics :as t]
-            [topology-grapher.describe :as td]
+  (:require [topology-grapher.describe :as td]
             [describe :as d]))
 
 (def topologies
