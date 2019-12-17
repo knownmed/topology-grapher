@@ -43,7 +43,7 @@ This is normally fine, but if you are using something like the Stuart
 Sierra [component](https://github.com/stuartsierra/component) for example you will need to refactor the
 initialisation to avoid needing the full system started.
 
-## 2. add a call to that command in CircleCI
+### 2. Create a CI job that invokes that namespace or function
 
 This is an example of configuration you need to add to CircleCI to generate and publish graph information.
 
