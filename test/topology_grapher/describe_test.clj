@@ -32,8 +32,7 @@
            (set (list-zip-file output-zip-file 1)))))
 
   (testing "generating two zip files for master"
-    (with-redefs [sut/git-branch (constantly "master")]
-      (sut/generate-zip t/topologies t/meta-data))
+    (sut/generate-zip t/topologies t/meta-data)
 
     (is (true? (.isFile (io/file output-zip-file))))
     (is (true? (.isFile (io/file output-zip-latest))))))
