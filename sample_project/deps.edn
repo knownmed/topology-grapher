@@ -1,0 +1,12 @@
+{:deps
+ {fundingcircle/jackdaw {:mvn/version "0.6.9"}
+  org.clojure/clojure {:mvn/version "1.10.1"}
+  hawk {:mvn/version "0.2.11"}
+  aysylu/loom {:mvn/version "1.0.2"}
+  org.apache.kafka/kafka-streams {:mvn/version "2.3.0"}
+  fundingcircle/topology-grapher {:local/root ".."}}
+
+ :mvn/repos
+ {"confluent" {:url "https://packages.confluent.io/maven/"}}
+
+ :paths ["src"]}

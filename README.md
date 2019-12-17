@@ -1,10 +1,75 @@
-# Topology Grapher
-
 [![Clojars Project](https://img.shields.io/clojars/v/fundingcircle/topology-grapher.svg)](https://clojars.org/fundingcircle/topology-grapher)
 [![CircleCI](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master.svg?style=svg)](https://circleci.com/gh/FundingCircle/topology-grapher/tree/master)
 [![codecov](https://codecov.io/gh/FundingCircle/topology-grapher/branch/master/graph/badge.svg)](https://codecov.io/gh/FundingCircle/topology-grapher)
 
+# Topology Grapher
+
 This library provides a means to build a directed graph (data) from a kafka streams topology.
+
+## How to integrate into your application
+
+If you want to play around with this library you can check the [sample project](./sample_project/README.md).
+
+There are a few simple steps to follow to integrate your kafka streaming app.
+
+### 1. Create a namespace or function that invokes `generate-zip`
+
+```
+(ns your-namespace
+  (:require [topology-grapher.describe :refer [generate-zip]]))
+
+(def meta-data {:domain "domain"
+    :subdomain "subdomain"
+    :application "application-name"})
+
+(def topologies
+  [{:application-name "app-2"
+    :topology topology-1}
+
+   {:application-name "app-1"
+    :topology topology-2}])
+
+(generate-zip topologies meta-data)
+
+```
+
+The `generate-zip` function is what takes care of transforming
+topologies objects into EDN files that are written out to disk.
+
+The important thing is that you need to be have a function that
+returns a topology object *without* having to actually start Kafka.
+
+This is normally fine, but if you are using something like the Stuart
+Sierra [component](https://github.com/stuartsierra/component) for example you will need to refactor the
+initialisation to avoid needing the full system started.
+
+### 2. Create a CI job that invokes that namespace or function
+
+Here’s an example [CircleCI](https://circleci.com/) job that generates and publishes the graph data:
+
+```
+  publish_topologies_graphs:
+    docker:
+      - image: circleci/clojure:lein-2.9.1
+
+    steps:
+      - checkout
+      - run: sudo apt update && sudo apt install awscli
+      - restore_cache:
+          key: your-project-{{ checksum "project.clj" }}
+
+      # the precise command depends on how you integrated
+      - run: lein run describe-topologies
+      # not the real bucket yet since we are still waiting for one
+      # - run: aws s3 cp --recursive /tmp/graphs/$your-project-name s3://$your-bucket
+```
+
+This particular CircleCI step can run in parallel with any other job, and should not be required as dependency.
+
+And you are done, if you integrated in a way that all the topologies will always be published automatically
+there is 0 maintenance effort needed from now on.
+
+# Graph implementation
 
 Although the generation of graph data is currently Kafka Streams specific, the
 generated graph data is generic and the rest of the functionality operates only
@@ -23,7 +88,7 @@ on the graph data. The intended flow of operation is:
 The graph generation has been tested on Kafka 1.0+ streams apps, both using the
 higher level DSL and lower level streams APIs.
 
-# Format of the Graph Data
+## Internal graph format
 
 The raw graph data is modeled in the form of Clojure maps. A topology
 represents the top level construct, and consists of a set of sub-graphs. The
@@ -133,7 +198,7 @@ dependencies.
 * `lein test`
 * `lein install` (to install a local snapshot for any local integration testing)
 
-## Release
+# Release
 
 This project uses [lein-git-version](https://github.com/arrdem/lein-git-version) for the versioning, which means that the current version is fetched from the git tags.
 
@@ -141,67 +206,6 @@ To release a new version you just need to:
 - create a new `git tag`, following [Semantic Versioning](https://semver.org/) conventions (check the changes since last version to decide what kind of release this is)
 - run `lein deploy` to do the release
 
-
-# How to integrate your application
-
-There are a few simple steps to follow to integrate your kafka streaming app:
-
-## 1. implement a command to call the describe-topologies
-
-```
-(ns your-namespace
-  (:require [topology-grapher.describe :refer [generate-zip]]))
-
-(def meta-data {:domain "domain"
-    :subdomain "subdomain"
-    :application "application-name"})
-
-(def topologies
-  [{:application-name "app-2"
-    :topology topology-1}
-
-   {:application-name "app-1"
-    :topology topology-2}])
-
-(generate-zip topologies meta-data)
-
-```
-
-The `generate-zip` function is what takes care of transforming
-topologies objects into EDN files that are written out to disk.
-
-The important thing is that you need to be have a function that
-returns a topology object *without* having to actually start Kafka.
-
-This is normally fine, but if you are using something like the Stuart
-Sierra components library for example you will need to refactor the
-initialisation to avoid needing the full system started.
-
-## 2. add a call to that command in CircleCI
-
-This is an example of configuration you need to add to CircleCI to generate and publish graph information.
-
-```
-  publish_topologies_graphs:
-    docker:
-      - image: *lein
-
-    steps:
-      - checkout
-      - run: sudo apt update && sudo apt install awscli
-      - restore_cache:
-          key: your-project-{{ checksum "project.clj" }}
-
-      # the precise command depends on how you integrated
-      - run: lein run describe-topologies
-      # not the real bucket yet since we are still waiting for one
-      # - run: aws s3 cp --recursive /tmp/graphs/$your-project-name s3://$your-bucket
-```
-
-This particular CircleCI step can run in parallel with any other job, and should not be required as dependency.
-
-And you are done, if you integrated in a way that all the topologies will always be published automatically
-there is 0 maintenance effort needed from now on.
 
 ## Contributing
 
