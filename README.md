@@ -45,7 +45,7 @@ initialisation to avoid needing the full system started.
 
 ### 2. Create a CI job that invokes that namespace or function
 
-This is an example of configuration you need to add to CircleCI to generate and publish graph information.
+Here’s an example [CircleCI](https://circleci.com/) job that generates and publishes the graph data:
 
 ```
   publish_topologies_graphs:
