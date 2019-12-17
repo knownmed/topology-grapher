@@ -207,6 +207,6 @@ To release a new version you just need to:
 - run `lein deploy` to do the release
 
 
-# Contributing
+## Contributing
 
 We welcome any thoughts or patches, please check the [Contributing guide](CONTRIBUTING.md) to see how to contribute to this project.
