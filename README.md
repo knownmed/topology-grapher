@@ -12,7 +12,7 @@ If you want to play around with this library you can check the [sample project](
 
 There are a few simple steps to follow to integrate your kafka streaming app.
 
-## 1. implement a command to call the describe-topologies
+### 1. Create a namespace or function that invokes `generate-zip`
 
 ```
 (ns your-namespace
