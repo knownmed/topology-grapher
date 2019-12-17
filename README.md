@@ -6,7 +6,7 @@
 
 This library provides a means to build a directed graph (data) from a kafka streams topology.
 
-# How to integrate your application
+## How to integrate into your application
 
 If you want to play around with this library you can check the [sample project](./sample_project/README.md).
 
