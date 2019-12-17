@@ -50,7 +50,7 @@ Here’s an example [CircleCI](https://circleci.com/) job that generates and pub
 ```
   publish_topologies_graphs:
     docker:
-      - image: *lein
+      - image: circleci/clojure:lein-2.9.1
 
     steps:
       - checkout
