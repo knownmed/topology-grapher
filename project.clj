@@ -12,8 +12,7 @@
                  [org.clojure/tools.cli "0.4.2"]
                  [aysylu/loom "1.0.2"]]
 
-  :plugins [[me.arrdem/lein-git-version "2.0.8"]
-            [jonase/eastwood "0.3.5"]]
+  :plugins [[me.arrdem/lein-git-version "2.0.8"]]
 
   :aliases {"kaocha" ["run" "-m" "kaocha.runner"]
             "tag" ["run" "-m" "grafana-helpers.release"]}
