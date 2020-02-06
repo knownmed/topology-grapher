@@ -64,20 +64,19 @@ And you want to render have a visual idea of how this topology looks like.
     ;; note that you could pass any number of topologies here, doesn't have to be just one
 
     ;; now we can generate a png file with just:
-    (tr/render-graph (vals topologies) {:fmt "png" :mode "topic" :cache false})
+    (tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
 
 and we get a high level overview of the topology:
 
-![topic.png](sample_project/topics.png)
+![topic.png](topics.png)
 
 or we can change mode to `detail`:
 
     (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})
 
-to see more detail:
+to see in more detail the Kafka internals:
 
-![details.png](sample_project/detail.png)
-
+![details.png](detail.png)
 
 
 ## Graph implementation
