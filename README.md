@@ -238,7 +238,7 @@ topologies objects into EDN files that are written out to disk.
 The important thing is that you need to be have a function that
 returns a topology object *without* having to actually start Kafka.
 
-This is normally fine, but if you are using something like the Stuart
+This is normally fine, but if you are using something like Stuart
 Sierra [component](https://github.com/stuartsierra/component) for example you will need to refactor the
 initialisation to avoid needing the full system started.
 
