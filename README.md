@@ -22,7 +22,7 @@ Within Funding Circle we’re also working on a Web app which can read the data 
 
 ## Status
 
-This project is being used internally at Funding Circle, but it's still quite *experimental*, so there could be breaking changes.
+This project is being used internally at Funding Circle, but it’s still quite **experimental** so there could be breaking changes.
 
 ## Tutorial
 
