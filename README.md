@@ -209,7 +209,7 @@ the topology edns files to a centralised place, like S3.
 This is specially useful if there is another project reading all these generated
 files, which needs to be built separately.*
 
-There are a few simple steps to follow to integrate your kafka streaming app.
+There are a few steps to follow to integrate your Kafka Streams app:
 
 ### 1. Create a namespace or function that invokes `generate-zip`
 
