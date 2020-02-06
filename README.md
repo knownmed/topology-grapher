@@ -229,7 +229,6 @@ There are a few simple steps to follow to integrate your kafka streaming app.
     :topology topology-2}])
 
 (generate-zip topologies meta-data)
-
 ```
 
 The `generate-zip` function is what takes care of transforming
