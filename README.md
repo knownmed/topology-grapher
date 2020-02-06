@@ -13,7 +13,7 @@ Understanding Kafka topologies can be daunting, and even more so having a high l
 With a Kafka-centric architecture it's quite normal to end up with hundreds of topics, with potentially many services consuming them.
 So answering questions like "who's consuming this topic", or "who's writing to this topic" can become quite hard, and documentation is very hard to maintain.
 
-This project is an attempt to simplify developers (and potentially other technical users) lives, giving the ability to generate graphs of Kafka topologies, and generating data in a format that can be consumed to query the generated data.
+This project is an attempt to help developers (and potentially other technical users) understand the Kafka topologies they work with or work on. It generates graphs of Kafka topologies, as data, in a format that can be consumed and queried.
 
 This project alone is intended to be used as a library/script, another component is a UI/API which takes all the data by this library and allows you to display it/query much more easily.
 The other component is currently not OSS, but it could be at a later point in time.
