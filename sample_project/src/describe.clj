@@ -8,7 +8,6 @@
 
 (defn topology-from-stream-builder
   [stream-builder]
-  ;; extract the underlying streams builder
   (.build (js/streams-builder* stream-builder)))
 
 (def meta-data
@@ -30,4 +29,4 @@
 (defn render-all!
   []
   (let [topologies (td/gen-topologies (topologies) meta-data)]
-   (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})))
+    (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})))
