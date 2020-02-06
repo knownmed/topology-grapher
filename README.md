@@ -18,7 +18,7 @@ This project is an attempt to help developers (and potentially other technical u
 This project provides a library that, once integrated into an application, enables that application to generate a graph of its Kafka topologies, as data. It can also invoke [GraphViz](http://graphviz.org/) to render the graph to an image file.
 
 Any other usage of the data, such as publishing, viewing, or querying it, is out of scope of this library.
-The other component is currently not OSS, but it could be at a later point in time.
+Within Funding Circle we’re also working on a Web app which can read the data produced by this library and allows for viewing and/or querying it via Web browsers and/or anything that can communicate via HTTP. That app is not currently OSS, but it could be at a later point in time.
 
 ## Status
 
