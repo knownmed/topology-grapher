@@ -31,45 +31,45 @@ This project is being used internally at Funding Circle, but it’s still quite 
 Suppose you defined a simple topology like:
 
 ```clojure
-    (defn transform
-      [v]
-      (-> v
-          (update :value inc)
-          (select-keys [:value])))
+(defn transform
+  [v]
+  (-> v
+      (update :value inc)
+      (select-keys [:value])))
 
-    (defn t1
-      [builder]
-      (-> (js/kstream builder (topic-config "input"))
-          (js/filter (fn [v] (not (:enabled v))))
-          (js/map-values transform)
-          (js/to (topic-config "output")))
+(defn t1
+  [builder]
+  (-> (js/kstream builder (topic-config "input"))
+      (js/filter (fn [v] (not (:enabled v))))
+      (js/map-values transform)
+      (js/to (topic-config "output")))
 
-      builder)
+  builder)
 ```
 
 And you want to render have a visual idea of how this topology looks like.
 
 ```clojure
-    (require '[topology-grapher.describe :as td])
+(require '[topology-grapher.describe :as td])
 
-    ;; we need to define some meta-data to categorise the topology
-    (def meta-data
-      {:domain "Big Corp"
-       :subdomain "departement"
-       :application "sample"})
+;; we need to define some meta-data to categorise the topology
+(def meta-data
+  {:domain "Big Corp"
+   :subdomain "departement"
+   :application "sample"})
 
-    ;; now we define a list of topologies to render, in this case just t1
-    (def topologies
-      [{:topology (topology-from-stream-builder (t1 (js/streams-builder)))
-        :application-name "my-application-id"}])
+;; now we define a list of topologies to render, in this case just t1
+(def topologies
+  [{:topology (topology-from-stream-builder (t1 (js/streams-builder)))
+    :application-name "my-application-id"}])
 
-    ;; with we generate the data representation of the topologies, which is
-    ;; internally created by calling the `.describe` method on topology object
-    (def topology-edn (td/gen-topologies topologies meta-data))
-    ;; note that you could pass any number of topologies here, doesn't have to be just one
+;; with we generate the data representation of the topologies, which is
+;; internally created by calling the `.describe` method on topology object
+(def topology-edn (td/gen-topologies topologies meta-data))
+;; note that you could pass any number of topologies here, doesn't have to be just one
 
-    ;; now we can generate a png file with just:
-    (tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
+;; now we can generate a png file with just:
+(tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
 ```
 
 and we get a high level overview of the topology:
@@ -79,7 +79,7 @@ and we get a high level overview of the topology:
 or we can change mode to `detail`:
 
 ```clojure
-    (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})
+(tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})
 ```
 
 to see in more detail the Kafka internals:
@@ -94,13 +94,13 @@ generated graph data is generic and the rest of the functionality operates only
 on the graph data. The intended flow of operation is:
 
 ```clojure
-    Data Source (e.g. Kafka Stream)
-        |
-        v
-    Graph Generator (specific to source)
-        |
-        v
-    Graph data (generic)
+Data Source (e.g. Kafka Stream)
+    |
+    v
+Graph Generator (specific to source)
+    |
+    v
+Graph data (generic)
 ```
 
 The graph generation has been tested on Kafka 1.0+ streams apps, both using the
