@@ -213,7 +213,7 @@ There are a few simple steps to follow to integrate your kafka streaming app.
 
 ### 1. Create a namespace or function that invokes `generate-zip`
 
-```
+```clojure
 (ns your-namespace
   (:require [topology-grapher.describe :refer [generate-zip]]))
 
