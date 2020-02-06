@@ -30,6 +30,7 @@ This project is being used internally at Funding Circle, but it’s still quite 
 
 Suppose you defined a simple topology like:
 
+```clojure
     (defn transform
       [v]
       (-> v
@@ -44,9 +45,11 @@ Suppose you defined a simple topology like:
           (js/to (topic-config "output")))
 
       builder)
+```
 
 And you want to render have a visual idea of how this topology looks like.
 
+```clojure
     (require '[topology-grapher.describe :as td])
 
     ;; we need to define some meta-data to categorise the topology
@@ -67,6 +70,7 @@ And you want to render have a visual idea of how this topology looks like.
 
     ;; now we can generate a png file with just:
     (tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
+```
 
 and we get a high level overview of the topology:
 
@@ -74,7 +78,9 @@ and we get a high level overview of the topology:
 
 or we can change mode to `detail`:
 
+```clojure
     (tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})
+```
 
 to see in more detail the Kafka internals:
 
@@ -87,7 +93,7 @@ Although the generation of graph data is currently Kafka Streams specific, the
 generated graph data is generic and the rest of the functionality operates only
 on the graph data. The intended flow of operation is:
 
-```
+```clojure
     Data Source (e.g. Kafka Stream)
         |
         v
@@ -107,7 +113,7 @@ represents the top level construct, and consists of a set of sub-graphs. The
 minimum data returned is described below. Each map my be further augmented with
 extra meta data as required.
 
-```
+```clojure
 {
  :topology <the name for this topology, e.g. a consumer group name>
  :id       <a unique UUID for this topology, deterministic from its name>
@@ -117,7 +123,7 @@ extra meta data as required.
 
 Where each graph is:
 
-```
+```clojure
 {
  :type  <the type of the thing the graph represents>
  :name  <the name that kafka gives this stream>
@@ -130,7 +136,7 @@ Where each graph is:
 
 ... And edges and nodes are represented as:
 
-```
+```clojure
 {
  :id   <a deterministic UUID for the node>
  :name <the 'human' name for the node>
@@ -156,7 +162,7 @@ system generates a graph. Currently all other nodes receive a unique Id.
 
 For example, here is the data for a simple single-stream (so one sub graph):
 
-```
+```clojure
 {:domain "marketplace",
  :subdomain "servicing",
  :application "puma",
