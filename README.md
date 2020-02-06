@@ -15,7 +15,9 @@ So answering questions like "who's consuming this topic", or "who's writing to t
 
 This project is an attempt to help developers (and potentially other technical users) understand the Kafka topologies they work with or work on. It generates graphs of Kafka topologies, as data, in a format that can be consumed and queried.
 
-This project alone is intended to be used as a library/script, another component is a UI/API which takes all the data by this library and allows you to display it/query much more easily.
+This project provides a library that, once integrated into an application, enables that application to generate a graph of its Kafka topologies, as data. It can also invoke [GraphViz](http://graphviz.org/) to render the graph to an image file.
+
+Any other usage of the data, such as publishing, viewing, or querying it, is out of scope of this library.
 The other component is currently not OSS, but it could be at a later point in time.
 
 ## Status
