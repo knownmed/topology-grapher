@@ -26,11 +26,26 @@ This project is being used internally at Funding Circle, but it’s still quite 
 
 ## Tutorial
 
-(The full code for this tutorial can be found in [sample project](./sample_project/README.md))
+*The full code for this tutorial can be found in [the demo namespace](./sample_project/src/demo.clj), I suggest firing up a REPL there and try it yourself.*
 
-Suppose you defined a simple topology like:
+Suppose you defined a simple topology, in this example created using the (Jackdaw library)[https://github.com/FundingCircle/jackdaw/]:
 
 ```clojure
+(require '[topology-grapher.describe :as td])
+(require '[topology-grapher.render :as tr])
+(require '[jackdaw.streams :as js])
+(require '[jackdaw.serdes.edn :as je])
+
+(defn topic-config
+  "Takes a topic name and returns a topic configuration map, which may
+  be used to create a topic or produce/consume records."
+  [topic-name]
+  {:topic-name topic-name
+   :partition-count 1
+   :replication-factor 1
+   :key-serde (je/serde)
+   :value-serde (je/serde)})
+
 (defn transform
   [v]
   (-> v
@@ -50,7 +65,6 @@ Suppose you defined a simple topology like:
 And you want to render have a visual idea of how this topology looks like.
 
 ```clojure
-(require '[topology-grapher.describe :as td])
 
 ;; we need to define some meta-data to categorise the topology
 (def meta-data
@@ -70,6 +84,14 @@ And you want to render have a visual idea of how this topology looks like.
 
 ;; now we can generate a png file with just:
 (tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
+
+```
+
+
+This will create a new file and return the full path where you can find the graph generated.
+
+```
+=> "/tmp/graphs/topics_c591fd52eef60efa56b0cd513aac14c1.png"
 ```
 
 and we get a high level overview of the topology:
