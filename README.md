@@ -28,7 +28,7 @@ This project is being used internally at Funding Circle, but it’s still quite 
 
 *The full code for this tutorial can be found in [the demo namespace](./sample_project/src/demo.clj), I suggest firing up a REPL there and try it yourself.*
 
-Suppose you defined a simple topology, in this example created using the (Jackdaw library)[https://github.com/FundingCircle/jackdaw/]:
+Suppose you defined a simple topology, as in this example created using the library (Jackdaw)[https://github.com/FundingCircle/jackdaw/]:
 
 ```clojure
 (require '[topology-grapher.describe :as td])
