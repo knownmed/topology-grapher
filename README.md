@@ -83,7 +83,7 @@ And you want to render have a visual idea of how this topology looks like.
 ;; note that you could pass any number of topologies here, doesn't have to be just one
 
 ;; now we can generate a png file with just:
-(tr/render-graph (vals topologies) {:fmt "png" :mode "topics" :cache false})
+(tr/render-graph (vals topology-edn) {:fmt "png" :mode "topics" :cache false})
 
 ```
 
