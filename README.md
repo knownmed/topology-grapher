@@ -72,6 +72,10 @@ And you want to render have a visual idea of how this topology looks like.
    :subdomain "departement"
    :application "sample"})
 
+(defn topology-from-stream-builder
+  [stream-builder]
+  (.build (js/streams-builder* stream-builder)))
+
 ;; now we define a list of topologies to render, in this case just t1
 (def topologies
   [{:topology (topology-from-stream-builder (t1 (js/streams-builder)))
