@@ -101,7 +101,7 @@ and we get a high level overview of the topology:
 or we can change mode to `detail`:
 
 ```clojure
-(tr/render-graph (vals topologies) {:fmt "png" :mode "detail" :cache false})
+(tr/render-graph (vals topology-edn) {:fmt "png" :mode "detail" :cache false})
 ```
 
 to see in more detail the Kafka internals:
