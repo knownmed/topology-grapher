@@ -10,7 +10,7 @@
                  ;; of project that are using this library
                  [org.apache.kafka/kafka-streams "2.2.0" :scope "provided"]
                  [org.clojure/tools.cli "0.4.2"]
-                 [aysylu/loom "1.0.2"]]
+                 [aysylu/loom "1.0.2" :exclusions [tailrecursion/cljs-priority-map]]]
 
   :plugins [[me.arrdem/lein-git-version "2.0.8"]]
 
