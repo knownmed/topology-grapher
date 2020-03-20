@@ -1,6 +1,7 @@
 {:deps
- {org.clojure/clojure #:mvn{:version "1.10.0"},
-  danlentz/clj-uuid #:mvn{:version "0.1.7"},
-  digest #:mvn{:version "1.4.9"},
-  org.clojure/tools.cli #:mvn{:version "0.4.2"},
-  aysylu/loom #:mvn{:version "1.0.2"}}}
+ {org.clojure/clojure {:mvn/version "1.10.0"},
+  danlentz/clj-uuid {:mvn/version "0.1.7"},
+  digest {:mvn/version "1.4.9"},
+  org.clojure/tools.cli {:mvn/version "0.4.2"},
+  aysylu/loom {:mvn/version "1.0.2"
+               :exclusions [tailrecursion/cljs-priority-map]}}}
