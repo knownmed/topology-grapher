@@ -22,7 +22,7 @@
   (base-node :node n))
 
 (defmethod describe-node :source [n]
-  (let [topics (map s/trim (-> (.topics n)
+  (let [topics (map s/trim (-> (.getTopics n)
                                (s/replace "[" "")
                                (s/replace "]" "")
                                (s/split #",")))]
