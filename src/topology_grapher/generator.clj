@@ -61,6 +61,13 @@
      :nodes (set (mapcat :nodes nodes))
      :edges (set (mapcat :edges nodes))}))
 
+(defmethod describe-node :subtopologydescription [n]
+  (let [nodes (map describe-node (.nodes n))]
+    {:type :stream
+     :name (str "stream-" (.id n))
+     :nodes (set (mapcat :nodes nodes))
+     :edges (set (mapcat :edges nodes))}))
+
 (defn topic? [s]
   (= :topic (:type s)))
 
